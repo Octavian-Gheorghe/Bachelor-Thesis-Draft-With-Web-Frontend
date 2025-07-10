@@ -1,0 +1,55 @@
+@startuml
+
+  ' --------- Candidate ---------
+  class Candidate {
+    - int dur
+    - int ti
+    - LocationSWO loc
+  }
+
+  ' --------- Pair ---------
+  class Pair {
+    - L left
+    - R right
+  }
+  Pair <|.. Candidate : uses
+
+  ' --------- DomainEdit Interface ---------
+  interface DomainEdit {
+    + ActivitySWO target()
+    + TemporalIntervalSWO original()
+  }
+
+  ' --------- Add Record ---------
+  class Add {
+    - ActivitySWO target
+    - TemporalIntervalSWO original
+  }
+  Add ..|> DomainEdit
+
+  ' --------- Remove Record ---------
+  class Remove {
+    - ActivitySWO target
+    - TemporalIntervalSWO original
+  }
+  Remove ..|> DomainEdit
+
+  ' --------- DomainContext ---------
+  class DomainContext {
+    - Deque<DomainEdit> log
+    + void recordRemove(ActivitySWO, TemporalIntervalSWO)
+    + void recordAdd(ActivitySWO, TemporalIntervalSWO)
+    + void close()
+  }
+
+  DomainContext --> DomainEdit : uses
+  DomainContext --> Add : creates
+  DomainContext --> Remove : creates
+  Add --> ActivitySWO
+  Add --> TemporalIntervalSWO
+  Remove --> ActivitySWO
+  Remove --> TemporalIntervalSWO
+  Candidate --> LocationSWO
+}
+
+@enduml

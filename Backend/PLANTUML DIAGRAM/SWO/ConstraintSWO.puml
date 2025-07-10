@@ -1,0 +1,80 @@
+@startuml
+class ActivityPartTemporalDomainConstraint {
+~ ActivitySWO activityToBeTested
++ boolean eval()
+}
+
+
+class OrderingConstraint {
+~ ActivitySWO activityToBeTested1
+~ ActivitySWO activityToBeTested2
++ boolean eval()
+}
+
+
+interface Constraint {
+~ boolean eval()
+}
+
+class MinimumTemporalPartDistanceConstraint {
+~ ActivitySWO activityToBeTested
+~ DistanceMatrix dm
+~ int dmin
++ boolean eval()
+}
+
+
+class PartDurationRangeConstraint {
+~ ActivitySWO activityToBeTested
++ boolean eval()
+}
+
+
+class ActivityPartDurationConstraint {
+~ ActivitySWO activityToBeTested
++ boolean eval()
+}
+
+
+class DurationRangeConstraint {
+~ ActivitySWO activityToBeTested
++ boolean eval()
+}
+
+
+class MaximumTemporalPartDistanceConstraint {
+~ ActivitySWO activityToBeTested
+~ int dmax
++ boolean eval()
+}
+
+
+class MinimumTemporalActivityDistanceConstraint {
+~ ActivitySWO a1
+~ ActivitySWO a2
+~ Integer dmin
+~ DistanceMatrix dm
++ boolean eval()
+}
+
+
+class MaximumTemporalActivityDistanceConstraint {
+~ ActivitySWO a1
+~ ActivitySWO a2
+~ Integer dmax
++ boolean eval()
+}
+
+
+
+
+Constraint <|.. ActivityPartTemporalDomainConstraint
+Constraint <|.. OrderingConstraint
+Constraint <|.. MinimumTemporalPartDistanceConstraint
+Constraint <|.. PartDurationRangeConstraint
+Constraint <|.. ActivityPartDurationConstraint
+Constraint <|.. DurationRangeConstraint
+Constraint <|.. MaximumTemporalPartDistanceConstraint
+Constraint <|.. MinimumTemporalActivityDistanceConstraint
+Constraint <|.. MaximumTemporalActivityDistanceConstraint
+@enduml

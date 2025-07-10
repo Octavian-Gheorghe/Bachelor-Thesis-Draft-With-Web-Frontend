@@ -1,0 +1,99 @@
+@startuml
+class MaximumActivitiesPartDistanceUtility {
+- ActivitySWO a
+- ActivitySWO b
+- int maxDistance
++ double computeUtility(List<ActivityPartSWO>,List<ActivityPartSWO>)
+}
+
+
+class OrderingPreferenceUtility {
+- ActivitySWO a
+- ActivitySWO b
++ double computeUtility(List<ActivityPartSWO>,List<ActivityPartSWO>)
+}
+
+
+class MinimumPartDistanceUtility {
+- ActivitySWO activity
+- int pdmin
++ double computeUtility(List<ActivityPartSWO>)
+}
+
+
+interface BinaryUtility {
+~ double computeUtility(List<ActivityPartSWO>,List<ActivityPartSWO>)
+}
+
+class ImplicationUtility {
+~ ActivitySWO a1
+~ ActivitySWO a2
++ double computeUtility(List<ActivityPartSWO>,List<ActivityPartSWO>)
+}
+
+
+class StepwiseActivityUtility {
+- ActivitySWO a
+- int stepPoint
++ double computeUtility(List<ActivityPartSWO>)
+}
+
+
+class ActivityDurationUtility {
+~ ActivitySWO a
+~ Integer durMin
+~ Integer durMax
+~ Double uLow
+~ Double uHigh
++ double computeUtility(List<ActivityPartSWO>)
+}
+
+
+interface DomainActivityUtility {
+~ double computeUtility(List<ActivityPartSWO>)
+}
+
+class MaximumPartDistanceUtility {
+- ActivitySWO activity
+- int pdmax
++ double computeUtility(List<ActivityPartSWO>)
+}
+
+
+interface UnaryUtility {
+~ double computeUtility(List<ActivityPartSWO>)
+}
+
+interface PartDistanceUtility {
+~ double computeUtility(List<ActivityPartSWO>)
+}
+
+class LinearActivityUtility {
+- ActivitySWO a
+- int earlyThreshold
++ double computeUtility(List<ActivityPartSWO>)
+}
+
+
+class MinimumActivitiesPartDistanceUtility {
+- ActivitySWO a
+- ActivitySWO b
+- int minDistance
++ double computeUtility(List<ActivityPartSWO>,List<ActivityPartSWO>)
+}
+
+
+
+
+BinaryUtility <|.. MaximumActivitiesPartDistanceUtility
+BinaryUtility <|.. OrderingPreferenceUtility
+PartDistanceUtility <|.. MinimumPartDistanceUtility
+BinaryUtility <|.. ImplicationUtility
+DomainActivityUtility <|.. StepwiseActivityUtility
+UnaryUtility <|.. ActivityDurationUtility
+UnaryUtility <|-- DomainActivityUtility
+PartDistanceUtility <|.. MaximumPartDistanceUtility
+UnaryUtility <|-- PartDistanceUtility
+DomainActivityUtility <|.. LinearActivityUtility
+BinaryUtility <|.. MinimumActivitiesPartDistanceUtility
+@enduml

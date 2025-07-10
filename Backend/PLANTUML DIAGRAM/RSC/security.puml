@@ -1,0 +1,62 @@
+@startuml
+
+class JWTAuthenticationFilter {
+- JWTGenerator tokenGenerator
+- UserEntityService customUserDetailsService
+# void doFilterInternal(HttpServletRequest,HttpServletResponse,FilterChain)
+- String getJWTFromRequest(HttpServletRequest)
+}
+
+class UserEntity {
+- int id
+- String username
+- String password
+- List<ActivityIdea> activityIdeas
+- List<Schedule> schedules
+}
+
+interface JpaRepository<T, ID>
+
+interface UserRepository {
+~ Optional<UserEntity> findByUsername(String)
+~ Boolean existsByUsername(String)
+}
+
+class UserEntityService {
+- UserRepository userRepository
++ UserDetails loadUserByUsername(String)
++ UserEntity getByUsername(String)
+}
+
+class JWTAuthenticationFilter {
+# void doFilterInternal(HttpServletRequest,HttpServletResponse,FilterChain)
+- String getJWTFromRequest(HttpServletRequest)
+}
+
+UserEntityService --> UserRepository
+UserDetailsService <|.. UserEntityService
+UserRepository --> UserEntity
+UserRepository <|.. JpaRepository
+
+class AuthenticationController {
+- AuthenticationManager authenticationManager
+- UserEntityService userService
+- PasswordEncoder passwordEncoder
+- JWTGenerator jwtGenerator
++ ResponseEntity<AuthResponseDTO> login(LoginDTO)
++ ResponseEntity<AuthResponseDTO> register(RegisterDTO)
+}
+
+
+AuthenticationController --> UserEntityService : uses
+AuthenticationController --> JWTGenerator : uses
+
+
+class JWTGenerator {
++ String generateToken(Authentication)
++ String getUsernameFromJWT(String)
++ boolean validateToken(String)
+}
+JWTAuthenticationFilter --> UserEntityService
+JWTAuthenticationFilter --> JWTGenerator
+@enduml

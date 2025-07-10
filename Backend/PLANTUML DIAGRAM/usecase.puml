@@ -1,0 +1,55 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor User
+
+rectangle "FlexiTIme" {
+
+    (Register)
+    (Login)
+    (Issue JWT Token)
+
+    User --> (Register)
+    User --> (Login)
+    (Register) --> (Issue JWT Token)
+    (Login) --> (Issue JWT Token)
+
+    (Use Application) <.. (Login) : <<requires>>
+    User --> (Use Application)
+
+    (Manage Activity Ideas)
+    (Generate Schedule)
+    (View Schedules)
+
+    (Use Application) --> (Manage Activity Ideas)
+    (Use Application) --> (Generate Schedule)
+    (Use Application) --> (View Schedules)
+
+    ' Nested functionality that depends on Activity Ideas
+    (Manage Locations)
+    (Manage Temporal Intervals)
+    (Manage Implication Preferences)
+    (Manage Schedule Time Preferences)
+    (Manage Distance Constraints)
+    (Manage Part Distance Preferences)
+    (Manage Activities Distance Preferences)
+    (Manage Ordering Preferences)
+    (Manage Duration Preferences)
+    (Manage Ordering Constraints)
+    (Manage Part Distance Constraints)
+
+    (Manage Activity Ideas) --> (Manage Locations)
+    (Manage Activity Ideas) --> (Manage Temporal Intervals)
+    (Manage Activity Ideas) --> (Manage Implication Preferences)
+    (Manage Activity Ideas) --> (Manage Schedule Time Preferences)
+    (Manage Activity Ideas) --> (Manage Distance Constraints)
+    (Manage Activity Ideas) --> (Manage Part Distance Preferences)
+    (Manage Activity Ideas) --> (Manage Activities Distance Preferences)
+    (Manage Activity Ideas) --> (Manage Ordering Preferences)
+    (Manage Activity Ideas) --> (Manage Duration Preferences)
+    (Manage Activity Ideas) --> (Manage Ordering Constraints)
+    (Manage Activity Ideas) --> (Manage Part Distance Constraints)
+}
+
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class org.example.RSC.Controller.AuthenticationController {
+- AuthenticationManager authenticationManager
+- UserRepository userRepository
+- RoleRepository roleRepository
+- PasswordEncoder passwordEncoder
+- JWTGenerator jwtGenerator
++ ResponseEntity<AuthResponseDTO> login(LoginDTO)
++ ResponseEntity<AuthResponseDTO> register(RegisterDTO)
+}
+
+
+@enduml

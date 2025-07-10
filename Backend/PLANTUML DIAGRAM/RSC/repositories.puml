@@ -1,0 +1,464 @@
+@startuml
+
+
+class SchedulerController {
+- ScheduleService scheduleService
+- ActivityIdeaService activityIdeaService
+- ActivitiesDistanceConstraintService activitiesDistanceConstraintService
+- ActivityPartDistanceConstraintService activityPartDistanceConstraintService
+- OrderingConstraintService orderingConstraintService
+- ActivitiesDistancePreferenceService activitiesDistancePreferenceService
+- ActivityDurationPreferenceService activityDurationPreferenceService
+- ActivityScheduleTimePreferenceService activityScheduleTimePreferenceService
+- ActivityPartDistancePreferenceService activityPartDistancePreferenceService
+- ImplicationPreferenceService implicationPreferenceService
+- OrderingPreferenceService orderingPreferenceService
+- ScheduledActivityPartService scheduledActivityPartService
+- UserEntityService userEntityService
++ List<ScheduledActivityPartDTO> getAll(String,ScheduleRequestDTO)
++ SWO setupSWO(List<ActivitySWO>,List<ActivityIdea>,DistanceMatrix)
++ List<ActivitySWO> convertIdeasToAlgorithmObjects(List<ActivityIdea>,LocalDateTime)
+- List<ScheduledActivityPartDTO> uniformizeResultFromSWO(List<ActivitySWO>,LocalDateTime,int)
+- List<BinaryUtility> getAllBinaryUtilities(List<ActivityIdea>,List<ActivitySWO>)
+- List<Constraint> generateConstraints(List<ActivityIdea>,List<ActivitySWO>,DistanceMatrix)
+- List<UnaryUtility> getAllUnaryUtilities(List<ActivityIdea>,List<ActivitySWO>)
+- List<TemporalIntervalSWO> convertTemporalIntervalToAlgorithmData(List<TemporalInterval>,LocalDateTime)
+- List<LocationSWO> convertLocationsAlgorithmData(List<Location>)
+- LocalDateTime findLowestActivityStartInterval(List<ActivityIdea>)
+- List<Location> getAllUniqueLocations(List<ActivityIdea>)
+- LocalDateTime findHighest(List<ActivityIdea>)
++ DistanceMatrix setupDistanceMatrix(List<Location>)
+- int computeDistance(Location,Location)
+}
+SchedulerController --> ScheduleService
+SchedulerController --> ActivityIdeaService
+SchedulerController --> ActivitiesDistanceConstraintService
+SchedulerController --> ActivityPartDistanceConstraintService
+SchedulerController --> OrderingConstraintService
+SchedulerController --> ActivitiesDistancePreferenceService
+SchedulerController --> ActivityDurationPreferenceService
+SchedulerController --> ActivityScheduleTimePreferenceService
+SchedulerController --> ActivityPartDistancePreferenceService
+SchedulerController --> ImplicationPreferenceService
+SchedulerController --> OrderingPreferenceService
+SchedulerController --> ScheduledActivityPartService
+SchedulerController --> UserEntityService
+SchedulerController --> SWO : uses
+
+
+enum TimePreferenceType {
++ EARLIER
++ LATER
+}
+
+enum DistanceType {
++ MINIMUM
++ MAXIMUM
+}
+
+class Schedule {
+- Integer id
+- String name
+- LocalDateTime startInterval
+- LocalDateTime endInterval
+- UserEntity user
+- List<ScheduledActivityPart> scheduledActivityParts
+}
+
+class ActivitiesDistancePreference {
+- Integer id
+- ActivityIdea activityIdea1
+- ActivityIdea activityIdea2
+- Integer distance
+- DistanceType type
+}
+
+class ActivityPartDistancePreference {
+- Integer id
+- ActivityIdea activityIdea
+- Integer distance
+- DistanceType type
+}
+
+class ScheduledActivityPart {
+- Integer id
+- Schedule schedule
+- String name
+- LocalDateTime startTime
+- Integer duration
+- String locationName
+}
+
+class TemporalInterval {
+- Integer id
+- LocalDateTime startInterval
+- LocalDateTime endInterval
+- ActivityIdea activityIdea
+}
+
+class ActivityDurationPreference {
+- Integer id
+- ActivityIdea activityIdea
+- Integer minimumDuration
+- Integer maximumDuration
+}
+
+class Location {
+- Integer id
+- String name
+- float x
+- float y
+- List<ActivityIdea> activityIdeas
+}
+
+class ActivityPartDistanceConstraint {
+- Integer id
+- ActivityIdea activityIdea
+- Integer distance
+- DistanceType type
+}
+
+class ImplicationPreference {
+- Integer id
+- ActivityIdea activityIdeaInitial
+- ActivityIdea activityIdeaImplied
+}
+
+
+class ActivitiesDistanceConstraint {
+- Integer id
+- ActivityIdea activityIdea1
+- ActivityIdea activityIdea2
+- Integer distance
+- DistanceType type
+}
+
+class UserEntity {
+- int id
+- String username
+- String password
+- List<ActivityIdea> activityIdeas
+- List<Schedule> schedules
+}
+
+class OrderingConstraint {
+- Integer id
+- ActivityIdea activityIdeaBefore
+- ActivityIdea activityIdeaAfter
+}
+
+class ActivityScheduleTimePreference {
+- Integer id
+- ActivityIdea activityIdea
+- LocalDateTime timeOfAnalysis
+- TimePreferenceType type
+}
+
+class OrderingPreference {
+- Integer id
+- ActivityIdea activityIdeaBefore
+- ActivityIdea activityIdeaAfter
+}
+
+class ActivityIdea {
+- Integer id
+- String name
+- Integer durimin
+- Integer durimax
+- Integer smin
+- Integer smax
+- Integer dmin
+- Integer dmax
+- UserEntity user
+- List<Location> locations
+- List<TemporalInterval> temporalIntervals
+- List<ActivitiesDistanceConstraint> activitiesDistanceConstraintsAsFirst
+- List<ActivitiesDistanceConstraint> activitiesDistanceConstraintsAsSecond
+- List<OrderingConstraint> orderingConstraintsBefore
+- List<OrderingConstraint> orderingConstraintsAfter
+- List<ActivityScheduleTimePreference> activityScheduleTimePreferences
+- List<ActivityPartDistancePreference> activityPartDistancePreferences
+- List<ActivityDurationPreference> activityDurationPreferences
+- List<ActivitiesDistancePreference> activitiesDistancePreferencesAsFirst
+- List<ActivitiesDistancePreference> activitiesDistancePreferencesAsSecond
+- List<OrderingPreference> orderingPreferencesBefore
+- List<OrderingPreference> orderingPreferencesAfter
+- List<ImplicationPreference> implicationPreferencesAsInitial
+- List<ImplicationPreference> implicationPreferencesAsImplied
+}
+
+
+
+
+
+
+
+interface JpaRepository<T, ID>
+
+interface UserRepository {
+~ Optional<UserEntity> findByUsername(String)
+~ Boolean existsByUsername(String)
+}
+
+interface ActivityPartDistanceConstraintRepository {}
+interface ActivityScheduleTimePreferenceRepository {}
+interface LocationRepository {}
+interface ImplicationPreferenceRepository {}
+interface OrderingPreferenceRepository {}
+interface ScheduleRepository {
+~ List<Schedule> findByUser_Id(Integer)
+}
+
+interface ScheduledActivityPartRepository {}
+interface ActivityDurationPreferenceRepository {}
+interface ActivitiesDistancePreferenceRepository {}
+interface OrderingConstraintRepository {}
+interface ActivitiesDistanceConstraintRepository {}
+interface ActivityIdeaRepository {
+~ List<ActivityIdea> findByUser_Id(Integer)
+~ Optional<ActivityIdea> findDetailedById(Integer)
+}
+
+interface TemporalIntervalRepository {
+}
+interface ActivityPartDistancePreferenceRepository {
+}
+
+
+class TemporalIntervalService {
+- TemporalIntervalRepository repo
+- ActivityIdeaRepository actRepo
++ List<TemporalInterval> findAll()
++ TemporalInterval findOne(Integer)
++ TemporalInterval save(TemporalIntervalDTO)
++ TemporalInterval update(Integer,TemporalIntervalDTO)
++ void delete(Integer)
+}
+
+
+class ActivitiesDistanceConstraintService {
+- ActivitiesDistanceConstraintRepository repo
+- ActivityIdeaRepository actRepo
++ ActivitiesDistanceConstraint create(ActivitiesDistanceConstraintDTO)
++ ActivitiesDistanceConstraint getById(Integer)
++ List<ActivitiesDistanceConstraint> getAll()
++ ActivitiesDistanceConstraint update(Integer,ActivitiesDistanceConstraintDTO)
++ void delete(Integer)
+}
+
+
+class LocationService {
+- LocationRepository repo
+- ActivityIdeaRepository actRepo
++ List<Location> findAll()
++ Location findById(Integer)
++ Location mapLocationToActivity(Integer,Integer)
++ Location save(LocationDTO)
++ Location update(Integer,LocationDTO)
++ void delete(Integer)
+}
+
+
+class UserEntityService {
+- UserRepository userRepository
++ UserDetails loadUserByUsername(String)
++ UserEntity getByUsername(String)
+- Collection<GrantedAuthority> mapRolesToAuthorities(List<Role>)
+}
+
+
+class OrderingConstraintService {
+- OrderingConstraintRepository repo
+- ActivityIdeaRepository actRepo
++ OrderingConstraint create(OrderingConstraintDTO)
++ OrderingConstraint getById(Integer)
++ List<OrderingConstraint> getAll()
++ OrderingConstraint update(Integer,OrderingConstraintDTO)
++ void delete(Integer)
+}
+
+
+class ActivityPartDistanceConstraintService {
+- ActivityPartDistanceConstraintRepository repo
+- ActivityIdeaRepository actRepo
++ ActivityPartDistanceConstraint create(ActivityPartDistanceConstraintDTO)
++ ActivityPartDistanceConstraint getById(Integer)
++ List<ActivityPartDistanceConstraint> getAll()
++ ActivityPartDistanceConstraint update(Integer,ActivityPartDistanceConstraintDTO)
++ void delete(Integer)
+}
+
+
+class OrderingPreferenceService {
+- OrderingPreferenceRepository repo
+- ActivityIdeaRepository actRepo
++ OrderingPreference create(OrderingPreferenceDTO)
++ OrderingPreference getById(Integer)
++ List<OrderingPreference> getAll()
++ OrderingPreference update(Integer,OrderingPreferenceDTO)
++ void delete(Integer)
+}
+
+
+class ActivityDurationPreferenceService {
+- ActivityDurationPreferenceRepository repo
+- ActivityIdeaRepository actRepo
++ ActivityDurationPreference create(ActivityDurationPreferenceDTO)
++ ActivityDurationPreference getById(Integer)
++ List<ActivityDurationPreference> getAll()
++ ActivityDurationPreference update(Integer,ActivityDurationPreferenceDTO)
++ void delete(Integer)
+}
+
+
+class ActivityPartDistancePreferenceService {
+- ActivityPartDistancePreferenceRepository repo
+- ActivityIdeaRepository actRepo
++ ActivityPartDistancePreference create(ActivityPartDistancePreferenceDTO)
++ ActivityPartDistancePreference getById(Integer)
++ List<ActivityPartDistancePreference> getAll()
++ ActivityPartDistancePreference update(Integer,ActivityPartDistancePreferenceDTO)
++ void delete(Integer)
+}
+
+
+class ImplicationPreferenceService {
+- ImplicationPreferenceRepository repo
+- ActivityIdeaRepository actRepo
++ ImplicationPreference create(ImplicationPreferenceDTO)
++ ImplicationPreference getById(Integer)
++ List<ImplicationPreference> getAll()
++ ImplicationPreference update(Integer,ImplicationPreferenceDTO)
++ void delete(Integer)
+}
+
+
+class ActivitiesDistancePreferenceService {
+- ActivitiesDistancePreferenceRepository repo
+- ActivityIdeaRepository actRepo
++ ActivitiesDistancePreference create(ActivitiesDistancePreferenceDTO)
++ ActivitiesDistancePreference getById(Integer)
++ List<ActivitiesDistancePreference> getAll()
++ ActivitiesDistancePreference update(Integer,ActivitiesDistancePreferenceDTO)
++ void delete(Integer)
+}
+
+
+class ActivityIdeaService {
+- ActivityIdeaRepository repository
+- UserRepository userRepo
++ ActivityIdea create(ActivityIdeaDTO)
++ List<ActivityIdea> findAllForUsername(String)
++ List<ActivityIdea> findAll()
++ ActivityIdea findById(int)
++ ActivityIdea update(int,ActivityIdeaDTO)
++ void delete(int)
++ List<ActivityIdea> getIdeasForUser(Integer)
++ ActivityIdea getFullActivity(Integer)
+}
+
+
+class ScheduledActivityPartService {
+- ScheduledActivityPartRepository repository
+- ScheduleRepository scheduleRepository
++ ScheduledActivityPart create(ScheduledActivityPartDTO)
++ ScheduledActivityPart getById(Integer)
++ List<ScheduledActivityPart> getAll()
++ ScheduledActivityPart update(Integer,ScheduledActivityPartDTO)
++ void delete(Integer)
+}
+
+
+class ActivityScheduleTimePreferenceService {
+- ActivityScheduleTimePreferenceRepository repo
+- ActivityIdeaRepository actRepo
++ ActivityScheduleTimePreference create(ActivityScheduleTimePreferenceDTO)
++ ActivityScheduleTimePreference getById(Integer)
++ List<ActivityScheduleTimePreference> getAll()
++ ActivityScheduleTimePreference update(Integer,ActivityScheduleTimePreferenceDTO)
++ void delete(Integer)
+}
+
+
+class ScheduleService {
+- ScheduleRepository repository
+- UserRepository userRepo
++ Schedule create(ScheduleDTO)
++ List<Schedule> findAllByUsername(String)
++ List<Schedule> findAll()
++ Schedule findById(int)
++ Schedule update(int,ScheduleDTO)
++ void delete(int)
+}
+
+
+
+OrderingConstraintService --> OrderingConstraintRepository : uses
+OrderingConstraintService --> ActivityIdeaRepository : uses
+ActivityPartDistanceConstraintService --> ActivityPartDistanceConstraintRepository : uses
+ActivityPartDistanceConstraintService --> ActivityIdeaRepository : uses
+ActivitiesDistanceConstraintService --> ActivitiesDistanceConstraintRepository : uses
+ActivitiesDistanceConstraintService --> ActivityIdeaRepository : uses
+OrderingPreferenceService --> OrderingPreferenceRepository : uses
+OrderingPreferenceService --> ActivityIdeaRepository : uses
+ImplicationPreferenceService --> ImplicationPreferenceRepository : uses
+ImplicationPreferenceService --> ActivityIdeaRepository : uses
+ActivityPartDistancePreferenceService --> ActivityPartDistancePreferenceRepository : uses
+ActivityPartDistancePreferenceService --> ActivityIdeaRepository : uses
+ActivityDurationPreferenceService --> ActivityDurationPreferenceRepository : uses
+ActivityDurationPreferenceService --> ActivityIdeaRepository : uses
+ActivitiesDistancePreferenceService --> ActivityIdeaRepository : uses
+ActivitiesDistancePreferenceService --> ActivitiesDistancePreferenceRepository : uses
+
+UserEntityService --> UserRepository
+TemporalIntervalService -->  TemporalIntervalRepository : uses
+TemporalIntervalService --> ActivityIdeaRepository : uses
+ScheduleService -->  ScheduleRepository : uses
+ScheduleService --> UserRepository : uses
+ActivityIdeaService --> ActivityIdeaRepository : uses
+ActivityIdeaService --> UserRepository : uses
+LocationService --> LocationRepository : uses
+LocationService --> ActivityIdeaRepository : uses
+ScheduledActivityPartService --> ScheduledActivityPartRepository : uses
+ScheduledActivityPartService --> UserRepository : uses
+UserDetailsService <|.. UserEntityService
+ActivityScheduleTimePreferenceService --> ActivityIdeaRepository : uses
+
+
+ActivityPartDistanceConstraintRepository --> ActivityPartDistanceConstraint
+ActivityScheduleTimePreferenceRepository --> ActivityScheduleTimePreference
+LocationRepository --> Location
+ImplicationPreferenceRepository --> ImplicationPreference
+OrderingPreferenceRepository --> OrderingPreference
+ScheduleRepository --> Schedule
+ScheduledActivityPartRepository --> ScheduledActivityPart
+ActivityDurationPreferenceRepository --> ActivityDurationPreference
+ActivitiesDistancePreferenceRepository --> ActivitiesDistancePreference
+OrderingConstraintRepository --> OrderingConstraint
+ActivitiesDistanceConstraintRepository --> ActivitiesDistanceConstraint
+ActivityIdeaRepository --> ActivityIdea
+TemporalIntervalRepository --> TemporalInterval
+ActivityPartDistancePreferenceRepository --> ActivityPartDistancePreference
+UserRepository --> UserEntity
+ActivitiesDistancePreference --> DistanceType
+ActivityPartDistancePreference --> DistanceType
+ActivityPartDistanceConstraint --> DistanceType
+ActivitiesDistanceConstraint --> DistanceType
+ActivityScheduleTimePreference --> TimePreferenceType
+ActivityScheduleTimePreferenceService --> ActivityScheduleTimePreferenceRepository
+JpaRepository <|-- UserRepository
+JpaRepository <|-- ActivityPartDistanceConstraintRepository
+JpaRepository <|-- ActivityScheduleTimePreferenceRepository
+JpaRepository <|-- LocationRepository
+JpaRepository <|-- ImplicationPreferenceRepository
+JpaRepository <|-- OrderingPreferenceRepository
+JpaRepository <|-- ScheduleRepository
+JpaRepository <|-- ScheduledActivityPartRepository
+JpaRepository <|-- ActivityDurationPreferenceRepository
+JpaRepository <|-- ActivitiesDistancePreferenceRepository
+JpaRepository <|-- OrderingConstraintRepository
+JpaRepository <|-- ActivitiesDistanceConstraintRepository
+JpaRepository <|-- ActivityIdeaRepository
+JpaRepository <|-- TemporalIntervalRepository
+JpaRepository <|-- ActivityPartDistancePreferenceRepository
+@enduml

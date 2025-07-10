@@ -1,0 +1,207 @@
+@startuml
+class ActivitySWO {
+- Integer id
+- String name
+- Integer durimin
+- Integer durimax
+- Integer duri
+- Integer pi
+- List<ActivityPartSWO> parts
+- Integer smini
+- Integer smaxi
+- Integer dmini
+- Integer dmaxi
+- List<TemporalIntervalSWO> F
+- List<LocationSWO> Loci
+- double difficulty
+- double currentUtility
+- Boolean troublemaker
+- Boolean scheduled
+- Boolean isInterruptible
++ boolean isActivityDurationFeasable(int)
++ void cleanUselessIntervals()
++ void calculateDifficulty()
++ List<Integer> getAllAvailableStartTimes(int)
++ void sortTemporalIntervalsByStart()
++ void sortActivityPartsByStart()
++ boolean equals(Object)
++ int hashCode()
+}
+
+class ActivityPartSWO {
+- Integer id
+- Integer tij
+- Integer durij
+- LocationSWO lij
++ Integer calculateEndTime()
++ String toString()
+}
+
+ActivitySWO -->  ActivityPartSWO
+ActivitySWO --> TemporalIntervalSWO
+ActivitySWO --> LocationSWO
+ActivityPartSWO --> LocationSWO
+
+class TemporalIntervalSWO {
+- Integer ai
+- Integer bi
++ Integer getWeight()
+}
+
+
+class ScheduleSWO {
+- List<ActivitySWO> activities
++ void addAnotherActivity(ActivitySWO)
++ void removeActivity(Integer)
++ boolean searchForActivity(Integer)
++ void removeUnusableIntervals()
++ ActivitySWO getViaId(int)
++ void determineDifficultiesOfActivities()
++ void sortActivitiesByDifficulty()
++ void setActivitiesAsNonTroublemakers()
+}
+
+ScheduleSWO --> ActivitySWO
+DistanceMatrix --> LocationSWO
+
+
+class DistanceMatrix {
+- Map<LocationSWO,Map<LocationSWO,Integer>> distances
++ {static} DistanceMatrix of(Collection<LocationSWO>)
++ void addLocation(LocationSWO)
++ void addLocationsFromActivity(ActivitySWO)
++ void addLocationsWithDistance(LocationSWO,LocationSWO,int)
++ int Dist(LocationSWO,LocationSWO)
++ LocationSWO closestDistancedLocation(LocationSWO,ActivitySWO)
++ LocationSWO closestDistancedLocationToActivityPart(LocationSWO,ActivityPartSWO)
++ Set<LocationSWO> allLocations()
+}
+
+
+class LocationSWO {
+~ int id
+- String locationName
++ boolean equals(Object)
++ int hashCode()
+}
+
+
+class Metric3Calculator {
++ {static} double m3(ActivitySWO)
+- {static} int nvl(Integer,String)
+- {static} int maxFillLength(int,int,int,int)
+}
+
+class Metric1Calculator {
++ {static} double m1(ActivitySWO)
+- {static} int getNetsize(List<TemporalIntervalSWO>)
+- {static} int nvl(Integer,String)
+}
+
+class Metric2Calculator {
++ {static} double m2(ActivitySWO)
+- {static} int nvl(Integer,String)
+- {static} int getWidth(List<TemporalIntervalSWO>)
+}
+
+ActivitySWO --> Metric1Calculator : uses
+ActivitySWO --> Metric2Calculator : uses
+ActivitySWO --> Metric3Calculator : uses
+
+
+class SWO {
+    - ScheduleSWO S
+    - ScheduleSWO P
+    - ScheduleSWO scheduled
+    - ScheduleSWO notScheduled
+    - double UtilityOfP
+    - DistanceMatrix matrix
+    - List<ActivitySWO> work
+    - List<UnaryUtility> allUnaryUtilitySources
+    - Map<Integer, List<UnaryUtility>> allUnaryUtilitySourcesForActivity
+    - List<BinaryUtility> allBinaryUtilitySources
+    - Map<Integer, List<BinaryUtility>> allBinaryUtilitySourcesForActivity
+    - List<Constraint> allConstraints
+    - Map<Integer, Map<String, List<Constraint>>> allConstraintsForActivity
+    - int round
+
+    + SWO()
+    + SWO(ScheduleSWO, List<Constraint>, DistanceMatrix, List<UnaryUtility>, List<BinaryUtility>)
+    + void setupConstraintsForAllActivities()
+    + void setupActivitiesBeforeBeginOfAlgorithm()
+    + void setupUtilitySourcesBeforeBeginOfAlgorithm()
+    + void setupUtilityProvidersForEaseOfAcces()
+    + double calculateUtility(ActivitySWO)
+    + double calculateUtility()
+    + double calculateUtilityForActivity(ActivitySWO)
+    + void generateWithReorganisation()
+}
+
+SWO --> ScheduleSWO
+SWO --> ActivitySWO
+SWO --> Constraint
+SWO --> UnaryUtility
+SWO --> BinaryUtility
+SWO --> DistanceMatrix
+SWO --> DomainContext
+SWO --> Candidate
+SWO --> LocationSWO
+SWO --> TemporalIntervalSWO
+SWO --> ActivityPartSWO
+
+
+  ' --------- Candidate ---------
+  class Candidate {
+    - int dur
+    - int ti
+    - LocationSWO loc
+  }
+
+  ' --------- Pair ---------
+  class Pair {
+    - L left
+    - R right
+  }
+  Pair <|.. Candidate : uses
+
+  ' --------- DomainEdit Interface ---------
+  interface DomainEdit {
+    + ActivitySWO target()
+    + TemporalIntervalSWO original()
+  }
+
+  ' --------- Add Record ---------
+  class Add {
+    - ActivitySWO target
+    - TemporalIntervalSWO original
+  }
+  Add ..|> DomainEdit
+
+  ' --------- Remove Record ---------
+  class Remove {
+    - ActivitySWO target
+    - TemporalIntervalSWO original
+  }
+  Remove ..|> DomainEdit
+
+  ' --------- DomainContext ---------
+  class DomainContext {
+    - Deque<DomainEdit> log
+    + void recordRemove(ActivitySWO, TemporalIntervalSWO)
+    + void recordAdd(ActivitySWO, TemporalIntervalSWO)
+    + void close()
+  }
+
+  DomainContext --> DomainEdit : uses
+  DomainContext --> Add : creates
+  DomainContext --> Remove : creates
+  Add --> ActivitySWO
+  Add --> TemporalIntervalSWO
+  Remove --> ActivitySWO
+  Remove --> TemporalIntervalSWO
+  Candidate --> LocationSWO
+}
+
+
+
+@enduml

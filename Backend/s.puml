@@ -1,0 +1,8 @@
+@startuml
+class JWTGenerator {
++ String generateToken(Authentication)
++ String getUsernameFromJWT(String)
++ boolean validateToken(String)
+}
+
+@enduml

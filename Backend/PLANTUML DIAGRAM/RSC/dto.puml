@@ -1,0 +1,114 @@
+@startuml
+class org.example.RSC.DTO.ScheduledActivityPartDTO {
+- Integer schedule_id
+- String name
+- LocalDateTime startTime
+- Integer duration
+- String locationName
+}
+
+class org.example.RSC.DTO.ActivityIdeaDTO {
+- String name
+- Integer durimin
+- Integer durimax
+- Integer smin
+- Integer smax
+- Integer dmin
+- Integer dmax
+- Integer user_id
+}
+
+class org.example.RSC.DTO.ActivitiesDistancePreferenceDTO {
+- Integer activityIdea1_id
+- Integer activityIdea2_id
+- Integer distance
+- DistanceType type
+}
+
+class org.example.RSC.DTO.ActivityScheduleTimePreferenceDTO {
+- Integer activityIdea_id
+- LocalDateTime timeOfAnalysis
+- TimePreferenceType type
+}
+
+class org.example.RSC.DTO.LocationDTO {
+- String name
+- float x
+- float y
+}
+
+class org.example.RSC.DTO.OrderingConstraintDTO {
+- Integer id
+- Integer activityIdeaBefore_id
+- Integer activityIdeaAfter_id
+}
+
+class org.example.RSC.DTO.ImplicationPreferenceDTO {
+- Integer activityIdeaInitial_id
+- Integer activityIdeaImplied_id
+}
+
+class org.example.RSC.DTO.ActivityPartDistancePreferenceDTO {
+- Integer activityIdea_id
+- Integer distance
+- DistanceType type
+}
+
+class org.example.RSC.DTO.ActivityDurationPreferenceDTO {
+- Integer activityIdea_id
+- Integer minimumDuration
+- Integer maximumDuration
+}
+
+class org.example.RSC.DTO.ScheduleDTO {
+- String name
+- LocalDateTime startInterval
+- LocalDateTime endInterval
+- Integer user_id
+}
+
+class org.example.RSC.DTO.AuthResponseDTO {
+- String accesToken
+- String tokenType
+}
+
+class org.example.RSC.DTO.ScheduleRequestDTO {
+- String name
+- List<Integer> activityIdeaIds
+}
+
+class org.example.RSC.DTO.RegisterDTO {
+- String username
+- String password
+}
+
+class org.example.RSC.DTO.ActivitiesDistanceConstraintDTO {
+- Integer activityIdea1_id
+- Integer activityIdea2_id
+- Integer distance
+- DistanceType type
+}
+
+class org.example.RSC.DTO.LoginDTO {
+- String username
+- String password
+}
+
+class org.example.RSC.DTO.TemporalIntervalDTO {
+- LocalDateTime startInterval
+- LocalDateTime endInterval
+- Integer activityIdea_id
+}
+
+class org.example.RSC.DTO.OrderingPreferenceDTO {
+- Integer activityIdeaBefore_id
+- Integer activityIdeaAfter_id
+}
+
+class org.example.RSC.DTO.ActivityPartDistanceConstraintDTO {
+- Integer activityIdea_id
+- Integer distance
+- DistanceType type
+}
+
+@enduml
