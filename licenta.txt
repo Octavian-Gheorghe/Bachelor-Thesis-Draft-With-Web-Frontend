@@ -1,0 +1,100 @@
+Exemplu de use case / flow example
+
+- utilizatorul deschide aplicatia penntru prima data si isi introduce niste date generale  pe baza label-ului: loc de munca (eventual introdus nr de ore pe sapt aici?), parinte, student, sport as a hobby, etc
+- pe baza acestor label-uri, programul genereaza un orar pe toata saptamana (tre sa contina si 8 ore de somn si pauze de mese NEAPARAT!) pe care utilizaotrul il poate accepta, refuza, sau (optional) retusa in mici proportii
+- orarul va determina si cat timp sa iti atribuie pt fiecare activitate: de ex, va zice ca pt sport va fi nevoie de 50 de minute, pt masa va zice 30, etc.
+- in functie de cat de repede, sau incet, iti termini fiecare activitaate, orarul va modifica timpul atribuit acelei activitati si il va pune altundeva sau il va lasa ca timp liber 
+(de ex: daca orarul sugereaza ca ai 45 de min la dispozitie sa faci curatenie, iar tu termini in 15, atunci sapt viitoare iti va lasa 30)
+(iar tre sa avem grija sa nu ia niciodata timp din somn ca sa ajunga sommnul mai putin de 8 ore)
+- probabil este nevoie sa lasam optiunea sa mai adauge labels de-a lungul saptamanii, desi mi-as dori ca ele sa inceapa sa fie valabiile abia dupa ce incepe urmatoarea sapt
+- probabil ar fi bine sa lasam si optiunea de moving the shceedule, desi asta nu imi dau seama cum ar merge...
+
+optional: sugestii legate de ce alte activitati sa adaugi in program?
+
+pros: 
+- este mult mai focused pe personal, at home developement si schedulling decat pe work management, deoarece exista deja destule aplicatii de genul asta
+- este mai focused pe timpul necesar pt fiecare activitate si pe a se plia pe programul tau
+- inclusivity for all ages
+
+cons/known issues:
+- desi exista multe generari de orare deja existente, nu stiu cate au chestia asta cu a genera si un potential timp, legat de aceasta generare este nevoie niste research
+- modificarea orarului este ceva de tinut cont
+- nu stiu cat de simplu sau cat de dificil ar fi sa implementez asa ceva, tinand cont ca sunt unele locuri din care nu poti taia timp peste un thresh hold
+
+
+aplicatii asemanatoare:
+1. Motion (AI-Powered Task & Calendar Manager)
+Uses AI to schedule tasks dynamically.
+Adjusts your schedule automatically when conflicts arise.
+Ideal for productivity and time-blocking.
+
+2. Reclaim.ai
+Integrates with Google Calendar to schedule tasks automatically.
+Prioritizes activities based on deadlines and preferences.
+Can balance work, personal tasks, and habits.
+
+3. SkedPal
+Smart time-blocking with AI-based scheduling.
+Adjusts based on changing availability.
+Good for task management and deep work scheduling.
+
+4. TimeHero
+Automates scheduling by analyzing your workload.
+Reschedules tasks dynamically as new ones come in.
+Best for teams and individuals with flexible deadlines.
+
+5. Sunsama
+Helps plan your daily and weekly schedules efficiently.
+Focuses on mindful productivity and work-life balance.
+Works with tools like Trello, Asana, and Notion.
+
+
+
+INFORMATII GENERAL UTILE PENTRU ORICINE E CURIOS LEGAT DE CUM AR TREBUI STRUCTURATA LICENTA
+- lucrarea are 2 componente: 
+1 teoretica
+	- introducerea: trebuie sa fie ca si un "act juranlistic"
+	- trebuie sa explici ca intr-un ziar lucrarea
+	- explici in termeni mari si cunoscuti aplicatia ta
+	- "un top down" cu o descriere generala a domeniului de studiu
+	- oaMENII NU AU IN ZIUA DE AZI.. IT'S RAPID...
+
+	- state of the art - ce au mai incercat sa faca altii
+	- diferente de approaches (cazul meu: ai vs non-ai0
+	- explic solutia mea (la nivel de... ce am luat bun de la fiecare)
+
+-	- descriu rezultatul
+
+	- capitole ce tin de partea
+	- problem definition - stau si discut problema in adevaratul sens al cuvantuluui
+	- "explici" problema - 1 pag 2
+	- state of the art: ce s-a facut si unde suntem noi acum in rezolvarea 
+	- studiu comprehensiv a literaturii:
+		- ai vs non ai
+		- iau de la fiecare cateva solutii reprezentative (lucrari stiintifice prioritizate)
+		- foarte usor se poate propune solutia in urma (ideal, ar trb sa se bazeze pe toate pro-urile)
+	- eu vreau sa propun solutia respectiva
+
+	- descriem tehnologiile utilizate
+	- framework de mobile
+	- framework de backend
+	- framework de ai
+	- LA NIVEL DE TEHNOLOGIE
+
+	- aspecte ce tin de implementare - diagrame de baze de date, de flow-uri, 
+	- cat de scalabila este aplicatia
+
+
+	- culmineaza un manual - un nr de screenshots legat de cum functioneaza aplicatia ta
+	
+	- future work - explici cum 
+1 practica
+
+
+
+FOCUS ON STATE OF THE ART STUDY
+	- will get clarifications based on what i want si de unde vreau sa invat eu
+
+- SALVEAZA REFERINTE
+- do it in a way you can integrate it further on
+
