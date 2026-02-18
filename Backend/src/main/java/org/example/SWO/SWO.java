@@ -34,7 +34,7 @@ public class SWO
             {
                 String fromString = from.getLocationName();
                 String toString = to.getLocationName();
-                int distance = fromString.equals(toString) ? 0 : 0; // Replace with your logic
+                int distance = fromString.equals(toString) ? 0 : 0;
                 row.put(to, distance);
             }
             distanceMatrix.put(from, row);
