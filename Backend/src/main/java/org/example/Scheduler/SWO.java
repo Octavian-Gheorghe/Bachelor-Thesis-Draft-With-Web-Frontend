@@ -465,10 +465,6 @@ public class SWO
             {
                 contextWithConstraints = null;
             }
-            if (totalDur >= act.getDurimax())
-            {
-                break;
-            }
             if (totalDur >= act.getDurimin())
             {
                 break;
